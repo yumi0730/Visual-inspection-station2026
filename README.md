@@ -6,13 +6,19 @@
 
 从 0 到 1：机械建模 → 打光拍照 → 数据标注 → 迁移学习 → 实时推理，全链路自建、全文件开源。
 
-![Status](https://img.shields.io/badge/status-v0.2%20working-brightgreen)
-![Model](https://img.shields.io/badge/model-YOLO26n-orange)
-![Ultralytics](https://img.shields.io/badge/ultralytics-8.4.175-blue)
-![Python](https://img.shields.io/badge/python-3.8%2B-yellow)
-![License](https://img.shields.io/badge/license-AGPL--3.0-red)
-![mAP@0.5](https://img.shields.io/badge/mAP%400.5-0.995-green)
+<img src="https://img.shields.io/badge/status-v0.2%20working-brightgreen" alt="Status">
+<img src="https://img.shields.io/badge/model-YOLO26n-orange" alt="Model">
+<img src="https://img.shields.io/badge/ultralytics-8.4.175-blue" alt="Ultralytics">
+<img src="https://img.shields.io/badge/python-3.8%2B-yellow" alt="Python">
+<img src="https://img.shields.io/badge/license-AGPL--3.0-red" alt="License">
+<img src="https://img.shields.io/badge/mAP%400.5-0.995-green" alt="mAP@0.5">
+<img src="https://img.shields.io/badge/mAP%400.5%3A0.95-0.801-green" alt="mAP@0.5:0.95">
 
+<br>
+
+<img src="./docs/assets/jiaoma_zhoucheng-pred_batch0.jpg" width="900" alt="角码 / 轴承 实时检测效果（v0.2 best.pt，验证集 batch0）">
+
+<p><sub>↑ 检测效果图由仓库内文件 <code>docs/assets/jiaoma_zhoucheng-pred_batch0.jpg</code> 直接显示，本地预览与 GitHub 页面均可打开；全部图片已压到 ≤1400 px 宽、合计 1.79 MB。</sub></p>
 
 </div>
 
@@ -215,7 +221,7 @@ git remote add origin https://github.com/<你的账号>/vision-inspection-statio
 git push -u origin main
 ```
 
-体积实测（本文件夹合计 **90.5 MB / 1681 个文件**，GitHub 单文件上限 100 MB、仓库超 5 GB 会被拒绝推送）：
+体积实测（本文件夹合计 **89.5 MB / 1681 个文件**，GitHub 单文件上限 100 MB、仓库超 5 GB 会被拒绝推送）：
 
 | 目录 | 体积 | 文件数 | 属性 |
 | --- | --- | --- | --- |
@@ -226,13 +232,13 @@ git push -u origin main
 | `software/vendor/` | 10.1 MB | 1044 | 上游快照（其中 `docs/` 就占 5 MB） |
 | `software/models/base/` + `samples/` | 5.3 + 4.6 MB | 3 | 基座权重 + 演示视频 |
 | `hardware/` | 2.4 MB | 12 | SolidWorks 原生文件 |
-| `docs/assets/` | 2.7 MB | 23 | README 配图 |
+| `docs/assets/` | 1.79 MB | 23 | README 配图（≤1400 px 网页副本，原图仍在 `software/runs/`） |
 
 按需要的"仓库画像"三选一：
 
 - **完整可复现（~90 MB）**：保持现状提交，把 `*.pt` / `*.mp4` 走 Git LFS（取消 `.gitattributes` 末段注释后 `git lfs install`）。注意 LFS 免费额度仅 1 GB 存储 / 1 GB 月带宽。
-- **代码 + 数据 + 权重（~70 MB）**：在 `.gitignore` 追加 `software/vendor/` 与 `software/runs/**/weights/last.pt`（后者已默认排除），依赖改用 `pip install ultralytics==8.4.175`。
-- **精简起源档案（~35 MB）**：再追加 `software/datasets/splits/`、`software/samples/`，只留脚本 + 文档 + 机械图 + annotated + `best.pt` + 图表；别人 clone 后跑 ③④ 就能完整重建。
+- **代码 + 数据 + 权重（~69 MB）**：在 `.gitignore` 追加 `software/vendor/`（`last.pt` 已默认排除），依赖改用 `pip install ultralytics==8.4.175`。
+- **精简起源档案（~34 MB）**：再追加 `software/datasets/splits/`、`software/samples/`，只留脚本 + 文档 + 机械图 + annotated + `best.pt` + 图表；别人 clone 后跑 ③④ 就能完整重建。
 
 
 
@@ -335,34 +341,98 @@ BACKBONE_END_INDEX = 10        # 冻结 0~10，训练 11~23
 
 ### 7.1 指标对比（验证集最优值）
 
-| 版本 / 任务 | 实际 epoch | 训练时长 | Precision | Recall | mAP@0.5 | mAP@0.5:0.95 |
-| --- | --- | --- | --- | --- | --- | --- |
-| v0.1 `luosi_luomu` | 185 | 541.5 s | 0.9964 | **1.000** | 0.995 | 0.627 |
-| v0.2 `jiaoma_zhoucheng` | 282 | 846.4 s | **1.000** | **1.000** | 0.995 | **0.801** |
+| 版本 / 任务 | 实际 epoch | 训练时长 | Precision | Recall | mAP@0.5 | mAP@0.5:0.95（最优） | mAP@0.5:0.95（末轮） |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| v0.1 `luosi_luomu` | 185 | 541.5 s | 0.9964 | **1.000** | 0.995 | 0.627 | 0.535 |
+| v0.2 `jiaoma_zhoucheng` | 282 | 846.4 s | **1.000** | **1.000** | 0.995 | **0.801** | 0.795 |
+
+> **口径说明**：P/R/mAP 取 `results.csv` 全周期最优值（Ultralytics 的 `best.pt` 也按此保存）；末轮值一并列出，因为两者差距能直接反映训练是否仍在收敛。v0.1 最优 0.627 → 末轮 0.535（后期已退化，末 50 轮 mAP@0.5:0.95 标准差 0.0145），v0.2 最优 0.801 → 末轮 0.795（标准差仅 0.0061，到 282 轮仍在缓慢上升，说明 300 epoch 上限还没吃满）。
 
 解读：
 
 - **Recall = 1.0**：验证集里没有漏检——对"数零件/找零件"这类检测任务，漏检比误检更致命，这条正好命中需求。
 - **mAP@0.5 = 0.995**：框位置已经够用；**mAP@0.5:0.95 从 0.627 → 0.801**，说明 v0.2 的框贴得更紧（IoU 要求更严的那一段显著改善）。
+- 定位损失的差距更直观：末轮 `val/box_loss` v0.1 = **1.568**、v0.2 = **0.855**（近一半），且 v0.1 后期抖动明显更大（std 0.0255 vs 0.0174）。
 - 训练成本极低：84 张训练图、282 epoch 只花 **846 秒**（约 3 s/epoch）。
 
 ### 7.2 曲线与矩阵
 
-| v0.2 训练全景 | v0.2 混淆矩阵（归一化） | v0.2 PR 曲线 |
-| --- | --- | --- |
-| ![results](docs/assets/jiaoma_zhoucheng-results.png) | ![cm](docs/assets/jiaoma_zhoucheng-confusion_normalized.png) | ![pr](docs/assets/jiaoma_zhoucheng-PR_curve.png) |
+> 全部使用 HTML `<img>` + 仓库内相对路径 `./docs/assets/`，GitHub、VS Code 预览、Typora、浏览器直开都能显示；原图（2400~3000 px）仍完整保留在 `software/runs/**` 里，`docs/assets/` 是网页优化副本。
 
-| v0.2 中文损失曲线 | v0.2 中文 mAP 曲线 | v0.2 类别分布 |
-| --- | --- | --- |
-| ![loss](docs/assets/jiaoma_zhoucheng-cn-train-loss.png) | ![map](docs/assets/jiaoma_zhoucheng-cn-map-curve.png) | ![labels](docs/assets/jiaoma_zhoucheng-labels.jpg) |
+**v0.2 训练全景 · 混淆矩阵 · PR 曲线**
 
-| v0.2 真值标注 batch0 | v0.2 预测结果 batch0 | 数据集样例 |
-| --- | --- | --- |
-| ![gt](docs/assets/jiaoma_zhoucheng-gt_batch0.jpg) | ![pred](docs/assets/jiaoma_zhoucheng-pred_batch0.jpg) | ![ds](docs/assets/dataset-sample.jpg) |
+<p align="center">
+  <img src="./docs/assets/jiaoma_zhoucheng-results.png" width="49%" alt="v0.2 训练全景：损失/精确率/召回率/mAP 随 epoch 变化">
+  <img src="./docs/assets/jiaoma_zhoucheng-confusion_normalized.png" width="49%" alt="v0.2 归一化混淆矩阵">
+  <br>
+  <img src="./docs/assets/jiaoma_zhoucheng-PR_curve.png" width="49%" alt="v0.2 PR 曲线">
+  <img src="./docs/assets/jiaoma_zhoucheng-F1_curve.png" width="49%" alt="v0.2 F1 曲线">
+</p>
 
-| v0.1 训练全景 | v0.1 PR 曲线 | v0.1 预测样例 |
+**v0.2 中文曲线（`train.py` 的 `make_chinese_plots()` 产出）**
+
+<p align="center">
+  <img src="./docs/assets/jiaoma_zhoucheng-cn-train-loss.png" width="49%" alt="v0.2 训练损失函数">
+  <img src="./docs/assets/jiaoma_zhoucheng-cn-val-loss.png" width="49%" alt="v0.2 验证损失函数">
+  <br>
+  <img src="./docs/assets/jiaoma_zhoucheng-cn-map-curve.png" width="49%" alt="v0.2 目标检测平均精度">
+  <img src="./docs/assets/jiaoma_zhoucheng-cn-pr-recall-curve.png" width="49%" alt="v0.2 精确率与召回率">
+  <br>
+  <img src="./docs/assets/jiaoma_zhoucheng-cn-lr-curve.png" width="49%" alt="v0.2 学习率变化曲线">
+  <img src="./docs/assets/jiaoma_zhoucheng-labels.jpg" width="49%" alt="v0.2 类别与框尺寸分布">
+</p>
+
+**标注真值 vs 模型预测 vs 数据样例**
+
+<p align="center">
+  <img src="./docs/assets/jiaoma_zhoucheng-gt_batch0.jpg" width="49%" alt="v0.2 验证集 batch0 真值标注">
+  <img src="./docs/assets/jiaoma_zhoucheng-pred_batch0.jpg" width="49%" alt="v0.2 验证集 batch0 模型预测">
+  <br>
+  <img src="./docs/assets/dataset-sample.jpg" width="49%" alt="数据集样例原图 1280x720">
+  <img src="./docs/assets/jiaoma_zhoucheng-train_batch0.jpg" width="49%" alt="v0.2 训练 batch0 增强后画面">
+</p>
+
+**v0.1（螺丝 / 螺母，历史版本）**
+
+<p align="center">
+  <img src="./docs/assets/luosi_luomu-results.png" width="49%" alt="v0.1 训练全景">
+  <img src="./docs/assets/luosi_luomu-confusion_normalized.png" width="49%" alt="v0.1 归一化混淆矩阵">
+  <br>
+  <img src="./docs/assets/luosi_luomu-PR_curve.png" width="49%" alt="v0.1 PR 曲线">
+  <img src="./docs/assets/luosi_luomu-pred_batch0.jpg" width="49%" alt="v0.1 预测样例">
+</p>
+
+**v0.1 中文曲线（与 v0.2 对照，看 mAP@0.5:0.95 的差距来自哪里）**
+
+<p align="center">
+  <img src="./docs/assets/luosi_luomu-cn-map-curve.png" width="32%" alt="v0.1 目标检测平均精度">
+  <img src="./docs/assets/luosi_luomu-cn-train-loss.png" width="32%" alt="v0.1 训练损失函数">
+  <img src="./docs/assets/luosi_luomu-cn-val-loss.png" width="32%" alt="v0.1 验证损失函数">
+  <br>
+  <img src="./docs/assets/luosi_luomu-cn-pr-recall-curve.png" width="32%" alt="v0.1 精确率与召回率">
+  <img src="./docs/assets/luosi_luomu-cn-lr-curve.png" width="32%" alt="v0.1 学习率变化曲线">
+  <img src="./docs/assets/jiaoma_zhoucheng-cn-map-curve.png" width="32%" alt="v0.2 目标检测平均精度（对照）">
+</p>
+
+> 对照结论（数据取自两份 `results.csv` 末 50 轮统计）：两版 **mAP@0.5 都是 0.995**（类别判别早就够了），差距全在框的贴合精度上 —— v0.1 的 mAP@0.5:0.95 末 50 轮均值 0.559 / 标准差 0.0145，v0.2 为 0.781 / 0.0061；末轮 `val/box_loss` 1.568 → 0.855。改善来源是标注贴合度与训练轮数（185 → 282），而不是模型容量。
+
+
+<details>
+<summary>图片清单（23 个文件，点击展开）</summary>
+
+| 文件 | 内容 | 尺寸 |
 | --- | --- | --- |
-| ![r1](docs/assets/luosi_luomu-results.png) | ![pr1](docs/assets/luosi_luomu-PR_curve.png) | ![p1](docs/assets/luosi_luomu-pred_batch0.jpg) |
+| `jiaoma_zhoucheng-results.png` | v0.2 训练全景（10 联图） | 1400×700 |
+| `jiaoma_zhoucheng-confusion_normalized.png` | v0.2 归一化混淆矩阵 | 1400×1050 |
+| `jiaoma_zhoucheng-PR_curve.png` / `-F1_curve.png` | v0.2 PR / F1 曲线 | 1400×933 |
+| `jiaoma_zhoucheng-cn-{train-loss,val-loss,map-curve,pr-recall-curve,lr-curve}.png` | v0.2 中文曲线 5 张 | 1400×834 |
+| `jiaoma_zhoucheng-{gt,pred}_batch0.jpg`、`-train_batch0.jpg`、`-labels.jpg` | v0.2 真值/预测/增强/分布 | 1400×801 等 |
+| `luosi_luomu-results.png`、`-confusion_normalized.png`、`-PR_curve.png`、`-pred_batch0.jpg` | v0.1 四类图 | 1400×700 等 |
+| `luosi_luomu-cn-*.png` | v0.1 中文曲线 5 张 | 1400×835 |
+| `dataset-sample.jpg` | 数据集原图样例 | 1280×720 |
+
+</details>
+
 
 ### 7.3 复现方式
 
@@ -445,6 +515,7 @@ VISIS_TASK=jiaoma_zhoucheng python train.py
 | 7 | 空的 `camera_results/` 目录 | 删除；推理输出统一 `software/results/`，由脚本自动创建 |
 | 8 | 推理默认用基座权重而非自训练权重 | `resolve_weights()` 优先已训练权重（见 §8.3） |
 | 9 | 训练产物散在深层 `runs/<task>/runs/26train/exp` | 保留 Ultralytics 原生结构（不破坏 resume），仅在 `configs/` 存 `args.*.yaml` 快照，README 引用图抽到 `docs/assets/` |
+| 10 | 配图最初用 markdown 表格内嵌 `![](docs/…)`：部分本地预览器不解析表格里的图片、`<div align="center">` 内的 markdown 图片语法也不稳、原图 2400~3000 px 显示过大 | 全部改为 HTML `<img src="./docs/assets/…">` + `width="49%"` 布局（GitHub / VS Code 预览 / Typora / 浏览器一致可显示）；从 `software/runs/**` 原始图重新生成 ≤1400 px 网页副本（2.7 MB → **1.79 MB**，折线图走 256 色调色板量化，中文曲线无失真） |
 
 全程**只移动、不删除数据**（仅去重与清缓存），且每步写入 `tools/move_log.csv`；回滚：
 
