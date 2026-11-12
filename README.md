@@ -13,7 +13,6 @@
 ![License](https://img.shields.io/badge/license-AGPL--3.0-red)
 ![mAP@0.5](https://img.shields.io/badge/mAP%400.5-0.995-green)
 
-![检测效果](docs/assets/jiaoma_zhoucheng-pred_batch0.jpg)
 
 </div>
 
