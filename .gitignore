@@ -1,0 +1,63 @@
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# ---------- 环境与密钥 ----------
+.env
+.env.*
+*.key
+*.pem
+secrets/
+
+# ---------- 编辑器 / 系统 ----------
+.idea/
+.vscode/*
+!.vscode/settings.json
+*.swp
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# ---------- 推理输出（可随时重跑，不入库） ----------
+software/results/
+
+# ---------- 数据集派生产物 ----------
+# 连拍原片与 annotated/ 内图片字节相同，属重复数据；如需归档请用 Releases / LFS
+software/datasets/raw_capture/
+
+# 划分结果可由 split_dataset.py 完全重建；若想让他人免步骤直接训练，可去掉这一行
+# software/datasets/splits/
+
+# ---------- 训练产物：只保留 best.pt 与图表，丢掉 last.pt ----------
+software/runs/**/weights/last.pt
+software/runs/**/*.egg-info/
+software/runs/**/.DS_Store
+
+# ---------- Ultralytics 自动生成的索引缓存（可随时重建） ----------
+*.cache
+*.labels.cache
+software/datasets/**/labels.cache
+
+# ---------- SolidWorks 临时文件 ----------
+*.~lock*
+*.SLDCOMP.lock
+$RECYCLE.BIN/
+
+# ---------- 上游仓库自带的无关文件 ----------
+software/vendor/ultralytics/.github/
+software/vendor/ultralytics/.vscode/
+software/vendor/ultralytics/CLAUDE.md
+software/vendor/ultralytics/AGENTS.md

@@ -1,0 +1,31 @@
+# 视觉检测台 / Vision Inspection Station
+# 训练与推理共用；GPU 用户请按 https://pytorch.org/get-started/locally/ 选择对应 CUDA 版本先装 torch
+#
+#   pip install -r requirements.txt
+#
+# Python: 3.8+（实测 3.10）
+
+# ---------- 核心框架 ----------
+# 若使用仓库内置源码（software/vendor/ultralytics），可注释掉本行
+ultralytics==8.4.175
+torch>=1.8.0,!=2.4.0          # Windows CPU 版 2.4.0 有问题
+torchvision>=0.9.0
+
+# ---------- 视觉 / 数据 ----------
+opencv-python>=4.7.0
+numpy>=1.23.0
+pandas>=1.1.4
+matplotlib>=3.3.0
+Pillow>=7.1.2
+PyYAML>=5.3.1
+tqdm>=4.64.0
+requests>=2.23.0
+scipy>=1.4.1
+
+# ---------- predict_video.py 专用 ----------
+imageio-ffmpeg>=0.4.9          # 自带 FFmpeg，用于音轨抽取与合并
+pygame>=2.0.0                  # 检测播放时同步还原原视频音频
+
+# ---------- 可选：标注工具（不在流水线内，按需安装） ----------
+# labelme>=5.4.1
+# PyQt5>=5.15
